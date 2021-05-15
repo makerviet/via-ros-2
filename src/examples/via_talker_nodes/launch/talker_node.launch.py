@@ -10,20 +10,16 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     config = os.path.join(
-        get_package_share_directory('generic_camera_nodes'),
+        get_package_share_directory('via_talker_nodes'),
         'config',
         'params.yaml'
         )
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'camera_calibration_file',
-            default_value='file://' + get_package_share_directory('generic_camera_nodes') + '/config/camera.yaml'),
         Node(
-            package='generic_camera_nodes',
-            executable='generic_camera_node',
-            namespace='/camera',
+            package='via_talker_nodes',
+            executable='via_talker_node',
+            namespace='/via_examples',
             parameters=[
-                {"camera_calibration_file": LaunchConfiguration('camera_calibration_file')},
                 config
             ]
         )
