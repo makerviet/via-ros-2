@@ -14,8 +14,8 @@ GenericCameraNode::GenericCameraNode(const rclcpp::NodeOptions &node_options)
     : Node("via_camera_node", node_options) {
   frame_id_ = this->declare_parameter("frame_id", "camera");
   filename_ = this->declare_parameter("file_name", "0");
-  image_width_ = this->declare_parameter("image_width", 1280);
-  image_height_ = this->declare_parameter("image_height", 720);
+  image_width_ = this->declare_parameter("image_width", -1);
+  image_height_ = this->declare_parameter("image_height", -1);
 
   rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_sensor_data;
   camera_info_pub_ = image_transport::create_camera_publisher(
