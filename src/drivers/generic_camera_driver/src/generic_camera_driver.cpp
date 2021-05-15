@@ -19,10 +19,10 @@ GenericCameraDriver::GenericCameraDriver(
   filename_ = filename;
 
   if (IsInteger(filename_)) {
-    cap_.open(std::stoi(filename_));
+    cap_.open(std::stoi(filename_), cv::CAP_V4L2);
     std::cout << "Capturing from camera: " << std::stoi(filename_) << std::endl;
   } else {
-    cap_.open(filename_);
+    cap_.open(filename_, cv::CAP_V4L2);
     std::cout << "Capturing from stream: " << filename_ << std::endl;
   }
 
