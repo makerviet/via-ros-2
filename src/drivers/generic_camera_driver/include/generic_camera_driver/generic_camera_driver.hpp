@@ -30,7 +30,6 @@ class GenericCameraDriver {
 
   int image_height_;
   int image_width_;
-  double fps_;
   std::function<void(cv::Mat)> callback_;
 
   void CaptureLoop();
