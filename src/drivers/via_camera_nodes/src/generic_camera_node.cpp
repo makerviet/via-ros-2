@@ -1,4 +1,4 @@
-#include "generic_camera_node/generic_camera_node.hpp"
+#include "via_camera_nodes/generic_camera_node.hpp"
 
 #include <chrono>
 #include <cstdio>
@@ -11,7 +11,7 @@ namespace drivers {
 namespace camera {
 
 GenericCameraNode::GenericCameraNode(const rclcpp::NodeOptions &node_options)
-    : Node("generic_camera_node", node_options) {
+    : Node("via_camera_node", node_options) {
   frame_id_ = this->declare_parameter("frame_id", "camera");
   filename_ = this->declare_parameter("file_name", "0");
   image_width_ = this->declare_parameter("image_width", 1280);

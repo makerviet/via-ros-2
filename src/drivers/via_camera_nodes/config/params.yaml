@@ -1,4 +1,4 @@
-generic_camera_node:
+via_camera_node:
   ros__parameters:
     camera_calibration_file: file://config/camera.yaml
     file_name: "0"

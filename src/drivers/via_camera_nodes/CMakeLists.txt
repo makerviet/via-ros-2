@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 ### Build the nodes
-project(generic_camera_nodes)
+project(via_camera_nodes)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -20,7 +20,7 @@ find_package(OpenCV REQUIRED)
 
 ament_auto_find_build_dependencies()
 ament_auto_add_executable(generic_camera_node
-  "include/generic_camera_node/generic_camera_node.hpp"
+  "include/via_camera_nodes/generic_camera_node.hpp"
   "src/generic_camera_node.cpp")
 
 ament_target_dependencies(generic_camera_node
