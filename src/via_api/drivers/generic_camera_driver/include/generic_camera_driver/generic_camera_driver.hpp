@@ -8,6 +8,11 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <thread>
+#include <mutex>
+#include <chrono>
+#include <cstdio>
+#include <memory>
+#include <string>
 
 namespace via {
 namespace drivers {
