@@ -1,11 +1,5 @@
 #include "generic_camera_driver/generic_camera_driver.hpp"
 
-#include <chrono>
-#include <cstdio>
-#include <memory>
-#include <mutex>
-#include <string>
-
 namespace via {
 namespace drivers {
 namespace camera {
