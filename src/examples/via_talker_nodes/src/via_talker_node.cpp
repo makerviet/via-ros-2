@@ -17,12 +17,14 @@ namespace examples {
 // The main function below will instantiate the class as a ROS node.
 
 Talker::Talker(const rclcpp::NodeOptions &options) : Node("talker", options) {
+  hello_text_ = this->declare_parameter<std::string>("hello_text", "Hello");
+  count_ = this->declare_parameter<int>("start_number", 0);
   // Create a function for when messages are to be sent.
   setvbuf(stdout, NULL, _IONBF, BUFSIZ);
   auto publish_message = [this]() -> void {
     msg_ = std::make_unique<std_msgs::msg::String>();
     msg_->data = "Hello World: " + std::to_string(count_++);
-    RCLCPP_INFO(this->get_logger(), "Publishing: [%s]", msg_->data.c_str());
+    RCLCPP_INFO(this->get_logger(), "%s, Publishing: [%s]", hello_text_.c_str(), msg_->data.c_str());
     // Put the message into a queue to be processed by the middleware.
     // This call is non-blocking.
     pub_->publish(std::move(msg_));

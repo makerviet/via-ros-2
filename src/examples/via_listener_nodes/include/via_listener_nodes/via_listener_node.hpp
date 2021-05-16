@@ -22,6 +22,7 @@ class Listener : public rclcpp::Node {
 
  private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub_;
+  std::string hello_text_;
 };
 }  // namespace examples
 }  // namespace via

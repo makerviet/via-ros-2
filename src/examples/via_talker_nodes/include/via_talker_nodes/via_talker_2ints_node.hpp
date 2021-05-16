@@ -26,6 +26,7 @@ class Talker2Ints : public rclcpp::Node {
   std::unique_ptr<via_common::msg::TwoInts> msg_;
   rclcpp::Publisher<via_common::msg::TwoInts>::SharedPtr pub_;
   rclcpp::TimerBase::SharedPtr timer_;
+  std::string hello_text_;
 };
 }  // namespace examples
 }  // namespace via

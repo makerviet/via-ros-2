@@ -18,6 +18,9 @@ namespace examples {
 
 Talker2Ints::Talker2Ints(const rclcpp::NodeOptions &options)
     : Node("talker", options) {
+  hello_text_ = this->declare_parameter<std::string>("hello_text", "Hello");
+  num1_ = this->declare_parameter<int>("start_number_a", 0);
+  num2_ = this->declare_parameter<int>("start_number_b", 0);
   // Create a function for when messages are to be sent.
   setvbuf(stdout, NULL, _IONBF, BUFSIZ);
   auto publish_message = [this]() -> void {
@@ -29,7 +32,7 @@ Talker2Ints::Talker2Ints(const rclcpp::NodeOptions &options)
     msg_ = std::make_unique<via_common::msg::TwoInts>();
     msg_->num1 = num1_;
     msg_->num2 = num2_;
-    RCLCPP_INFO(this->get_logger(), "Publishing: [%d] [%d]", msg_->num1,
+    RCLCPP_INFO(this->get_logger(), "%s, Publishing: [%d] [%d]", hello_text_.c_str(), msg_->num1,
                 msg_->num2);
     // Put the message into a queue to be processed by the middleware.
     // This call is non-blocking.
@@ -37,7 +40,7 @@ Talker2Ints::Talker2Ints(const rclcpp::NodeOptions &options)
   };
   // Create a publisher with a custom Quality of Service profile.
   rclcpp::QoS qos(rclcpp::KeepLast(7));
-  pub_ = this->create_publisher<via_common::msg::TwoInts>("chatter", qos);
+  pub_ = this->create_publisher<via_common::msg::TwoInts>("chatter_2ints", qos);
 
   // Use a timer to schedule periodic message publishing.
   timer_ = this->create_wall_timer(1s, publish_message);
