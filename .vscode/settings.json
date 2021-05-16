@@ -117,5 +117,14 @@
     ],
     "python.pythonPath": "/bin/python3",
     "C_Cpp.clang_format_fallbackStyle": "Google",
-    "C_Cpp.clang_format_style": "Google"
+    "C_Cpp.clang_format_style": "Google",
+    "files.watcherExclude": {
+        "/install": true,
+        "/log": true,
+        "/build": true
+    },
+    "files.exclude": {
+        "**/build": true,
+        "**/install": true
+    }
 }
