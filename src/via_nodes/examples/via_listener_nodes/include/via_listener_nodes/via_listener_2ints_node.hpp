@@ -8,7 +8,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_components/register_node_macro.hpp"
-#include "via_common/msg/two_ints.hpp"
+#include "via_msgs/msg/two_ints.hpp"
 
 using namespace std::chrono_literals;
 
@@ -21,7 +21,7 @@ class Listener2Ints : public rclcpp::Node {
   explicit Listener2Ints(const rclcpp::NodeOptions &options);
 
  private:
-  rclcpp::Subscription<via_common::msg::TwoInts>::SharedPtr sub_;
+  rclcpp::Subscription<via_msgs::msg::TwoInts>::SharedPtr sub_;
   std::string hello_text_;
 };
 }  // namespace examples

@@ -29,7 +29,7 @@ Talker2Ints::Talker2Ints(const rclcpp::NodeOptions &options)
     } else {
       ++num1_;
     }
-    msg_ = std::make_unique<via_common::msg::TwoInts>();
+    msg_ = std::make_unique<via_msgs::msg::TwoInts>();
     msg_->num1 = num1_;
     msg_->num2 = num2_;
     RCLCPP_INFO(this->get_logger(), "%s, Publishing: [%d] [%d]", hello_text_.c_str(), msg_->num1,
@@ -40,7 +40,7 @@ Talker2Ints::Talker2Ints(const rclcpp::NodeOptions &options)
   };
   // Create a publisher with a custom Quality of Service profile.
   rclcpp::QoS qos(rclcpp::KeepLast(7));
-  pub_ = this->create_publisher<via_common::msg::TwoInts>("chatter_2ints", qos);
+  pub_ = this->create_publisher<via_msgs::msg::TwoInts>("chatter_2ints", qos);
 
   // Use a timer to schedule periodic message publishing.
   timer_ = this->create_wall_timer(1s, publish_message);

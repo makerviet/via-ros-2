@@ -8,7 +8,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_components/register_node_macro.hpp"
-#include "via_common/msg/two_ints.hpp"
+#include "via_msgs/msg/two_ints.hpp"
 
 using namespace std::chrono_literals;
 
@@ -23,8 +23,8 @@ class Talker2Ints : public rclcpp::Node {
  private:
   size_t num1_ = 0;
   size_t num2_ = 0;
-  std::unique_ptr<via_common::msg::TwoInts> msg_;
-  rclcpp::Publisher<via_common::msg::TwoInts>::SharedPtr pub_;
+  std::unique_ptr<via_msgs::msg::TwoInts> msg_;
+  rclcpp::Publisher<via_msgs::msg::TwoInts>::SharedPtr pub_;
   rclcpp::TimerBase::SharedPtr timer_;
   std::string hello_text_;
 };
