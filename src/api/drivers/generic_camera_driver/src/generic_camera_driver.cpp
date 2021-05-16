@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cstdio>
 #include <memory>
+#include <mutex>
 #include <string>
 
 namespace via {
@@ -17,7 +18,25 @@ GenericCameraDriver::GenericCameraDriver(
   callback_ = callback;
   capturing_ = false;
   filename_ = filename;
+}
 
+GenericCameraDriver::~GenericCameraDriver() { Stop(); }
+
+void GenericCameraDriver::CaptureLoop() {
+  while (true) {
+    if (!capturing_) {
+      return;
+    }
+    cap_ >> frame_;
+    if (!frame_.empty()) {
+      callback_(frame_);
+    }
+  }
+  std::cout << "Exitting camera loop" << std::endl;
+}
+
+void GenericCameraDriver::OpenCamera() {
+  const std::lock_guard<std::mutex> lock(cap_mutex_);
   if (IsInteger(filename_)) {
     cap_.open(std::stoi(filename_), cv::CAP_V4L2);
     std::cout << "Capturing from camera: " << std::stoi(filename_) << std::endl;
@@ -44,33 +63,27 @@ GenericCameraDriver::GenericCameraDriver(
   if (frame_.cols != image_width_) {
     std::cerr << "Warning: Could not set image width." << std::endl;
   }
-
-  cap_thread_ = std::thread(&GenericCameraDriver::CaptureLoop, this);
-  cap_thread_.detach();
 }
 
-GenericCameraDriver::~GenericCameraDriver() {
-  Stop();
+void GenericCameraDriver::CloseCamera() {
+  const std::lock_guard<std::mutex> lock(cap_mutex_);
   if (cap_.isOpened()) {
     cap_.release();
   }
 }
 
-void GenericCameraDriver::CaptureLoop() {
-  while (true) {
-    if (capturing_) {
-      cap_ >> frame_;
-      if (!frame_.empty()) {
-        callback_(frame_);
-      }
-    }
-  }
+void GenericCameraDriver::Start() {
+  OpenCamera();
+  capturing_ = true;
+  cap_thread_ = std::thread(&GenericCameraDriver::CaptureLoop, this);
+  cap_thread_.detach();
 }
 
-
-void GenericCameraDriver::Start() { capturing_ = true; }
-
-void GenericCameraDriver::Stop() { capturing_ = false; }
+void GenericCameraDriver::Stop() {
+  capturing_ = false;
+  CloseCamera();
+  cap_thread_.join();
+}
 
 bool GenericCameraDriver::IsInteger(const std::string& s) {
   return !s.empty() && std::find_if(s.begin(), s.end(), [](unsigned char c) {

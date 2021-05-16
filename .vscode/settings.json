@@ -115,5 +115,7 @@
     "python.analysis.extraPaths": [
         "/opt/ros/foxy/lib/python3.8/site-packages/"
     ],
-    "python.pythonPath": "/bin/python3"
+    "python.pythonPath": "/bin/python3",
+    "C_Cpp.clang_format_fallbackStyle": "Google",
+    "C_Cpp.clang_format_style": "Google"
 }

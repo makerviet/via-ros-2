@@ -20,6 +20,8 @@ class GenericCameraDriver {
   ~GenericCameraDriver();
   void Start();
   void Stop();
+  void OpenCamera();
+  void CloseCamera();
 
  private:
   std::string filename_;
@@ -27,6 +29,7 @@ class GenericCameraDriver {
   cv::VideoCapture cap_;
   std::thread cap_thread_;
   bool capturing_;
+  std::mutex cap_mutex_;
 
   int image_height_;
   int image_width_;
