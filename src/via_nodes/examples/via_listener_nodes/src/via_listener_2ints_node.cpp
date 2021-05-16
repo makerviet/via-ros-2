@@ -23,14 +23,14 @@ Listener2Ints::Listener2Ints(const rclcpp::NodeOptions &options)
   // Variations of this function also exist using, for example UniquePtr for
   // zero-copy transport.
   setvbuf(stdout, NULL, _IONBF, BUFSIZ);
-  auto callback = [this](const via_common::msg::TwoInts::SharedPtr msg) -> void {
+  auto callback = [this](const via_msgs::msg::TwoInts::SharedPtr msg) -> void {
     RCLCPP_INFO(this->get_logger(), "%s, I heard: [%d] [%d]", hello_text_.c_str(), msg->num1, msg->num2);
   };
   // Create a subscription to the topic which can be matched with one or more
   // compatible ROS publishers. Note that not all publishers on the same topic
   // with the same type will be compatible: they must have compatible Quality of
   // Service policies.
-  sub_ = create_subscription<via_common::msg::TwoInts>("chatter_2ints", 10, callback);
+  sub_ = create_subscription<via_msgs::msg::TwoInts>("chatter_2ints", 10, callback);
 }
 }  // namespace examples
 }  // namespace via
