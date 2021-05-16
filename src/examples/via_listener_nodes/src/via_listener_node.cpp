@@ -17,12 +17,13 @@ namespace examples {
 
 Listener::Listener(const rclcpp::NodeOptions &options)
     : Node("listener", options) {
+  hello_text_ = this->declare_parameter<std::string>("hello_text", "Hello");
   // Create a callback function for when messages are received.
   // Variations of this function also exist using, for example UniquePtr for
   // zero-copy transport.
   setvbuf(stdout, NULL, _IONBF, BUFSIZ);
   auto callback = [this](const std_msgs::msg::String::SharedPtr msg) -> void {
-    RCLCPP_INFO(this->get_logger(), "I heard: [%s]", msg->data.c_str());
+    RCLCPP_INFO(this->get_logger(), "%s, I heard: [%s]", hello_text_.c_str(), msg->data.c_str());
   };
   // Create a subscription to the topic which can be matched with one or more
   // compatible ROS publishers. Note that not all publishers on the same topic

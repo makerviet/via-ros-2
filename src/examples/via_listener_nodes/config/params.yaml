@@ -1,4 +1,9 @@
-/**:
-  ros__parameters:
-    param_a: 1001
-    param_b: 1111
+/listener:
+  via_listener_node:
+    ros__parameters:
+      hello_text: "Hello World from Listener"
+      param_b: 2222
+  via_listener_2ints_node:
+    ros__parameters:
+      hello_text: "Hello World from 2Ints Listener"
+      param_b: 1111

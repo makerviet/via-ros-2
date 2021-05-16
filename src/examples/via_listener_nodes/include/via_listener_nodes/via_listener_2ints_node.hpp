@@ -22,6 +22,7 @@ class Listener2Ints : public rclcpp::Node {
 
  private:
   rclcpp::Subscription<via_common::msg::TwoInts>::SharedPtr sub_;
+  std::string hello_text_;
 };
 }  // namespace examples
 }  // namespace via

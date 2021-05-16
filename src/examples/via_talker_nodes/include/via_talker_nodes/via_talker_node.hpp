@@ -25,6 +25,7 @@ class Talker : public rclcpp::Node {
   std::unique_ptr<std_msgs::msg::String> msg_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_;
   rclcpp::TimerBase::SharedPtr timer_;
+  std::string hello_text_;
 };
 }  // namespace examples
 }  // namespace via

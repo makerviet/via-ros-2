@@ -1,4 +1,10 @@
-/**:
-  ros__parameters:
-    param_a: 1001
-    param_b: 1111
+/via_examples:
+  via_talker_node:
+    ros__parameters:
+      hello_text: "Hello World from Talker"
+      start_number: 1000
+  via_talker_2ints_node:
+    ros__parameters:
+      hello_text: "Hello World from 2Ints Talker"
+      start_number_a: 1000
+      start_number_b: 1000
