@@ -12,27 +12,25 @@ namespace camera {
 
 GenericCameraNode::GenericCameraNode(const rclcpp::NodeOptions &node_options)
     : Node("via_camera_node", node_options) {
-  frame_id_ = this->declare_parameter("frame_id", "camera");
-  filename_ = this->declare_parameter("file_name", "0");
-  image_width_ = this->declare_parameter("image_width", -1);
-  image_height_ = this->declare_parameter("image_height", -1);
+  frame_id_ = this->declare_parameter<std::string>("frame_id", "camera");
+  filename_ = this->declare_parameter<std::string>("file_name", "0");
+  image_width_ = this->declare_parameter<int>("image_width", -1);
+  image_height_ = this->declare_parameter<int>("image_height", -1);
+  std::string camera_calibration_file_param_ =
+      this->declare_parameter<std::string>("camera_calibration_file",
+                                           "file://config/camera.yaml");
 
-  rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_sensor_data;
-  camera_info_pub_ = image_transport::create_camera_publisher(
-      this, "image", custom_qos_profile);
-
+  // Initialize camera publisher
+  camera_info_pub_ = image_transport::create_camera_publisher(this, "image");
   camera_info_manager_ =
       std::make_shared<camera_info_manager::CameraInfoManager>(this);
-
-  auto camera_calibration_file_param_ = this->declare_parameter(
-      "camera_calibration_file", "file://config/camera.yaml");
   camera_info_manager_->loadCameraInfo(camera_calibration_file_param_);
 
+  // Initialize camera driver and start reading images
   driver_ = std::make_shared<GenericCameraDriver>(
       filename_, image_width_, image_height_,
       std::bind(&GenericCameraNode::ImageCallback, this,
                 std::placeholders::_1));
-
   driver_->Start();
 }
 
@@ -92,7 +90,8 @@ int main(int argc, char *argv[]) {
   rclcpp::executors::SingleThreadedExecutor exec;
 
   const rclcpp::NodeOptions options;
-  auto camera_node = std::make_shared<via::drivers::camera::GenericCameraNode>(options);
+  auto camera_node =
+      std::make_shared<via::drivers::camera::GenericCameraNode>(options);
 
   exec.add_node(camera_node);
   exec.spin();
