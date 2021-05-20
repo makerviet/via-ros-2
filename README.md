@@ -32,7 +32,40 @@
 
 **ROS 2 Cheatsheet:** <https://github.com/ubuntu-robotics/ros2_cheats_sheet>.
 
-## Issues
+## II. Camera node demo
+
+- Build all
+
+```
+colcon build
+source install/setup.bash
+```
+
+- Launch camera node
+
+```
+ros2 launch via_camera_nodes camera_node.launch.py
+```
+
+- Start camera stream
+
+```
+ros2 service call /camera/start std_srvs/srv/Trigger "{}"
+```
+
+- Open image viewer
+
+```
+ros2 run rqt_image_view rqt_image_view
+```
+
+- Stop camera stream
+
+```
+ros2 service call /camera/stop std_srvs/srv/Trigger "{}"
+```
+
+## III. Issues
 
 ### 1. No ROS node name when using `ros2 node list`:
 

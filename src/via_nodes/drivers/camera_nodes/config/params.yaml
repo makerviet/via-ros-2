@@ -1,7 +1,7 @@
 camera:
   generic_camera_node:
     ros__parameters:
-      camera_calibration_file: file:///workspaces/via-sdk/src/nodes/drivers/via_camera_nodes/config/camera.yaml
+      camera_calibration_file: file:///workspaces/via-sdk/src/via_nodes/drivers/camera_nodes/config/camera.yaml
       file_name: "0"
       frame_id: camera
       image_height: 720

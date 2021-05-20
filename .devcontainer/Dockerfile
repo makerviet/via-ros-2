@@ -14,7 +14,7 @@ FROM athackst/ros2:foxy-dev
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-   && apt-get -y install libopencv-dev ros-foxy-camera-info-manager \
+   && apt-get -y install clang-format libopencv-dev ros-foxy-camera-info-manager \
    ros-foxy-image-transport ros-foxy-rqt-image-view
 
 # Set up auto-source of workspace for ros user
