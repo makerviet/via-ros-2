@@ -1,10 +1,10 @@
 #ifndef VIA_GENERIC_CAMERA_NODE_HPP_
 #define VIA_GENERIC_CAMERA_NODE_HPP_
 
-#include <camera_info_manager/camera_info_manager.hpp>
-#include <image_transport/image_transport.hpp>
 #include <stdio.h>
 
+#include <camera_info_manager/camera_info_manager.hpp>
+#include <image_transport/image_transport.hpp>
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -12,6 +12,7 @@
 #include <sensor_msgs/msg/camera_info.hpp>
 #include <sensor_msgs/msg/image.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <std_srvs/srv/trigger.hpp>
 
 #include "generic_camera_driver/generic_camera_driver.hpp"
 
@@ -33,10 +34,17 @@ class GenericCameraNode : public rclcpp::Node {
 
   std::shared_ptr<camera_info_manager::CameraInfoManager> camera_info_manager_;
   image_transport::CameraPublisher camera_info_pub_;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr start_service;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr stop_service;
+
   std::shared_ptr<sensor_msgs::msg::Image> image_msg_;
   std::shared_ptr<sensor_msgs::msg::Image> ConvertFrameToMessage(
       const cv::Mat& frame);
 
+  void StartCallback(std_srvs::srv::Trigger::Request::SharedPtr req,
+                     std_srvs::srv::Trigger::Response::SharedPtr res);
+  void StopCallback(std_srvs::srv::Trigger::Request::SharedPtr req,
+                    std_srvs::srv::Trigger::Response::SharedPtr res);
   void ImageCallback(const cv::Mat& frame);
 };
 }  // namespace camera

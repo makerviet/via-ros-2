@@ -76,7 +76,6 @@ void GenericCameraDriver::Start() {
 void GenericCameraDriver::Stop() {
   capturing_ = false;
   CloseCamera();
-  cap_thread_.join();
 }
 
 bool GenericCameraDriver::IsInteger(const std::string& s) {

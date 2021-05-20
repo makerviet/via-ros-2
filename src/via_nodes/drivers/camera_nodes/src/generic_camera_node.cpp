@@ -26,12 +26,35 @@ GenericCameraNode::GenericCameraNode(const rclcpp::NodeOptions &node_options)
       std::make_shared<camera_info_manager::CameraInfoManager>(this);
   camera_info_manager_->loadCameraInfo(camera_calibration_file_param_);
 
+  // Initialize services to control camera
+  start_service = this->create_service<std_srvs::srv::Trigger>(
+      "start", std::bind(&GenericCameraNode::StartCallback, this,
+                         std::placeholders::_1, std::placeholders::_2));
+  stop_service = this->create_service<std_srvs::srv::Trigger>(
+      "stop", std::bind(&GenericCameraNode::StopCallback, this,
+                        std::placeholders::_1, std::placeholders::_2));
+
   // Initialize camera driver and start reading images
   driver_ = std::make_shared<GenericCameraDriver>(
       filename_, image_width_, image_height_,
       std::bind(&GenericCameraNode::ImageCallback, this,
                 std::placeholders::_1));
+}
+
+void GenericCameraNode::StartCallback(
+    std_srvs::srv::Trigger::Request::SharedPtr req,
+    std_srvs::srv::Trigger::Response::SharedPtr res) {
   driver_->Start();
+  res->success = true;
+  res->message = "Successfully started motor.";
+}
+
+void GenericCameraNode::StopCallback(
+    std_srvs::srv::Trigger::Request::SharedPtr req,
+    std_srvs::srv::Trigger::Response::SharedPtr res) {
+  driver_->Stop();
+  res->success = true;
+  res->message = "Successfully stopped motor.";
 }
 
 std::shared_ptr<sensor_msgs::msg::Image>

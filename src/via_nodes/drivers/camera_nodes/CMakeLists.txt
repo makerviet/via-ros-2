@@ -12,6 +12,7 @@ find_package(generic_camera_driver REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(camera_info_manager REQUIRED)
 find_package(image_transport REQUIRED)
@@ -24,7 +25,8 @@ ament_auto_add_executable(generic_camera_node
   "src/generic_camera_node.cpp")
 
 ament_target_dependencies(generic_camera_node
-  generic_camera_driver OpenCV rclcpp rclcpp_components camera_info_manager image_transport camera_calibration_parsers)
+  std_srvs generic_camera_driver OpenCV rclcpp rclcpp_components
+  camera_info_manager image_transport camera_calibration_parsers)
 
 install(TARGETS
   generic_camera_node
