@@ -57,42 +57,12 @@ void GenericCameraNode::StopCallback(
   res->message = "Successfully stopped motor.";
 }
 
-std::shared_ptr<sensor_msgs::msg::Image>
-GenericCameraNode::ConvertFrameToMessage(const cv::Mat &frame) {
-  std_msgs::msg::Header header_;
-  sensor_msgs::msg::Image ros_image;
-  ros_image.header = header_;
-  ros_image.height = frame.rows;
-  ros_image.width = frame.cols;
-  ros_image.encoding = "bgr8";
-  ros_image.is_bigendian = false;
-  ros_image.step = frame.cols * frame.elemSize();
-  size_t size = ros_image.step * frame.rows;
-  ros_image.data.resize(size);
-
-  if (frame.isContinuous()) {
-    memcpy(reinterpret_cast<char *>(&ros_image.data[0]), frame.data, size);
-  } else {
-    uchar *ros_data_ptr = reinterpret_cast<uchar *>(&ros_image.data[0]);
-    uchar *cv_data_ptr = frame.data;
-    for (int i = 0; i < frame.rows; ++i) {
-      memcpy(ros_data_ptr, cv_data_ptr, ros_image.step);
-      ros_data_ptr += ros_image.step;
-      cv_data_ptr += frame.step;
-    }
-  }
-
-  auto msg_ptr_ = std::make_shared<sensor_msgs::msg::Image>(ros_image);
-  return msg_ptr_;
-}
-
 void GenericCameraNode::ImageCallback(const cv::Mat &frame) {
-  image_msg_ = ConvertFrameToMessage(frame);
+  image_msg_ = std::make_shared<via_msgs::msg::Image>(
+      via::converters::ImageConverter::OpenCVMatToImageMsg(frame));
 
-  // Put the message into a queue to be processed by the middleware -
-  // Non-blocking.
-  sensor_msgs::msg::CameraInfo::SharedPtr camera_info_msg_(
-      new sensor_msgs::msg::CameraInfo(camera_info_manager_->getCameraInfo()));
+  std::shared_ptr<via_msgs::msg::CameraInfo> camera_info_msg_(
+      new via_msgs::msg::CameraInfo(camera_info_manager_->getCameraInfo()));
 
   rclcpp::Time timestamp = this->get_clock()->now();
 
