@@ -10,10 +10,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <std_srvs/srv/trigger.hpp>
-#include <via_msgs/msg_defs.hpp>
+#include <via_definitions/msg_defs.hpp>
 #include <via_converters/image_converter.hpp>
-
-#include "generic_camera_driver/generic_camera_driver.hpp"
+#include <generic_camera_driver/generic_camera_driver.hpp>
 
 namespace via {
 namespace drivers {
@@ -36,7 +35,7 @@ class GenericCameraNode : public rclcpp::Node {
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr start_service;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr stop_service;
 
-  std::shared_ptr<via_msgs::msg::Image> image_msg_;
+  std::shared_ptr<via_definitions::msg::Image> image_msg_;
 
   void StartCallback(std_srvs::srv::Trigger::Request::SharedPtr req,
                      std_srvs::srv::Trigger::Response::SharedPtr res);

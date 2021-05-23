@@ -58,11 +58,11 @@ void GenericCameraNode::StopCallback(
 }
 
 void GenericCameraNode::ImageCallback(const cv::Mat &frame) {
-  image_msg_ = std::make_shared<via_msgs::msg::Image>(
+  image_msg_ = std::make_shared<via_definitions::msg::Image>(
       via::converters::ImageConverter::OpenCVMatToImageMsg(frame));
 
-  std::shared_ptr<via_msgs::msg::CameraInfo> camera_info_msg_(
-      new via_msgs::msg::CameraInfo(camera_info_manager_->getCameraInfo()));
+  std::shared_ptr<via_definitions::msg::CameraInfo> camera_info_msg_(
+      new via_definitions::msg::CameraInfo(camera_info_manager_->getCameraInfo()));
 
   rclcpp::Time timestamp = this->get_clock()->now();
 

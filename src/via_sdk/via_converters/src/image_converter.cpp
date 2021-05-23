@@ -3,7 +3,7 @@
 namespace via {
 namespace converters {
 
-via_msgs::msg::Image ImageConverter::OpenCVMatToImageMsg(const cv::Mat &frame) {
+via_definitions::msg::Image ImageConverter::OpenCVMatToImageMsg(const cv::Mat &frame) {
   sensor_msgs::msg::Image ros_image;
   ros_image.height = frame.rows;
   ros_image.width = frame.cols;

@@ -1,3 +1,3 @@
-[submodule "src/via_msgs"]
-	path = src/via_msgs
-	url = git@github.com:makerhanoi/via_msgs.git
+[submodule "src/via_sdk/via_definitions"]
+	path = src/via_sdk/via_definitions
+	url = https://github.com/makerhanoi/via_definitions.git

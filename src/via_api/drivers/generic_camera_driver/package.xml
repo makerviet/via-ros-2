@@ -4,7 +4,8 @@
   <name>generic_camera_driver</name>
   <version>0.0.1</version>
   <description>Generic camera driver on ROS 2</description>
-  <maintainer email="vietanh.dev@gmail.com">Viet Anh Nguyen</maintainer>
+  <maintainer email="makerhanoi@gmail.com">MakerHanoi</maintainer>
+  <maintainer email="air.team.2050@gmail.com">AIR</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
