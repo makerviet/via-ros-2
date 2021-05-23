@@ -4,7 +4,8 @@
     <name>via_camera_nodes</name>
     <version>0.0.1</version>
     <description>Generic camera driver on ROS 2</description>
-    <maintainer email="vietanh.dev@gmail.com">Viet Anh Nguyen</maintainer>
+    <maintainer email="makerhanoi@gmail.com">MakerHanoi</maintainer>
+    <maintainer email="air.team.2050@gmail.com">AIR</maintainer>
     <license>MIT</license>
 
     <buildtool_depend>ament_cmake_auto</buildtool_depend>
@@ -12,7 +13,7 @@
     <depend>rclcpp</depend>
     <depend>rclcpp_components</depend>
     <depend>std_msgs</depend>
-    <depend>via_msgs</depend>
+    <depend>via_definitions</depend>
     <depend>via_converters</depend>
     <depend>std_srvs</depend>
     <depend>generic_camera_driver</depend>

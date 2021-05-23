@@ -48,5 +48,4 @@ install(
 
 ament_export_include_directories(include)
 ament_export_libraries(generic_camera_driver)
-
 ament_package()

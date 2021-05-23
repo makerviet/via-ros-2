@@ -2,14 +2,14 @@
 #define VIA_IMAGE_CONVERTER_HPP_
 
 #include <opencv2/opencv.hpp>
-#include </workspaces/via-sdk/src/via_msgs/include/via_msgs/msg_defs.hpp>
+#include <via_definitions/msg_defs.hpp>
 
 namespace via {
 namespace converters {
 
 class ImageConverter {
  public:
-  static via_msgs::msg::Image OpenCVMatToImageMsg(const cv::Mat& image);
+  static via_definitions::msg::Image OpenCVMatToImageMsg(const cv::Mat& image);
 };
 
 }  // namespace converters
