@@ -1,0 +1,47 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(via_converters)
+
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(ament_cmake REQUIRED)
+find_package(OpenCV REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(via_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(image_transport REQUIRED)
+
+include_directories(include ${cv_bridge_INCLUDE_DIRS})
+
+add_library(via_converters STATIC
+  include/via_converters/image_converter.hpp
+  src/image_converter.cpp)
+ament_target_dependencies(via_converters
+    "OpenCV")
+
+ament_target_dependencies(via_converters OpenCV sensor_msgs)
+
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+install(
+  TARGETS via_converters
+  EXPORT via_converters
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
+
+ament_export_dependencies(rosidl_default_runtime)
+ament_package()

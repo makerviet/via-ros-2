@@ -3,8 +3,8 @@
 - VIA project: <https://via.makerviet.org/>.
 - Co-developed by VIA & AIR.
 - Contact:
-    + makerhanoi@gmail.com
-    + air.team.2050@gmail.com
+    + VIA Team: makerhanoi@gmail.com
+    + AIR Team: air.team.2050@gmail.com
 
 ## I. Setup development environment
 
