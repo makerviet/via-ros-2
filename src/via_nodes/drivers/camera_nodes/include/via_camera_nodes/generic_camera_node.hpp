@@ -8,11 +8,10 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <sensor_msgs/image_encodings.hpp>
-#include <sensor_msgs/msg/camera_info.hpp>
-#include <sensor_msgs/msg/image.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <std_srvs/srv/trigger.hpp>
+#include <via_msgs/msg_defs.hpp>
+#include <via_converters/image_converter.hpp>
 
 #include "generic_camera_driver/generic_camera_driver.hpp"
 
@@ -37,9 +36,7 @@ class GenericCameraNode : public rclcpp::Node {
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr start_service;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr stop_service;
 
-  std::shared_ptr<sensor_msgs::msg::Image> image_msg_;
-  std::shared_ptr<sensor_msgs::msg::Image> ConvertFrameToMessage(
-      const cv::Mat& frame);
+  std::shared_ptr<via_msgs::msg::Image> image_msg_;
 
   void StartCallback(std_srvs::srv::Trigger::Request::SharedPtr req,
                      std_srvs::srv::Trigger::Response::SharedPtr res);
