@@ -19,7 +19,7 @@ GenericCameraDriver::~GenericCameraDriver() { Stop(); }
 void GenericCameraDriver::CaptureLoop() {
   while (true) {
     if (!capturing_) {
-      return;
+      break;
     }
     cap_ >> frame_;
     if (!frame_.empty()) {
@@ -40,9 +40,8 @@ void GenericCameraDriver::OpenCamera() {
   }
 
   if (!cap_.isOpened()) {
-    std::cerr << "Error: Could not read camera stream from: " << filename_
-              << std::endl;
-    exit(1);
+    std::cerr << std::string("Error: Could not read camera stream from: ") + filename_ << std::endl;
+    throw std::runtime_error(std::string("Error: Could not read camera stream from: ") + filename_);
   }
 
   // Set frame properties
@@ -67,14 +66,27 @@ void GenericCameraDriver::CloseCamera() {
 }
 
 void GenericCameraDriver::Start() {
-  OpenCamera();
+  if (capturing_) {
+    std::cerr << "Camera is still running. Please stop it before starting again." << std::endl;
+    throw std::runtime_error("Camera is still running. Please stop it before starting again.");
+  } try {
+    OpenCamera();
+  } catch (const char *excp) {
+    throw excp;
+  }
+  
   capturing_ = true;
+
+  const std::lock_guard<std::mutex> lock(cap_thread_mutex_);
   cap_thread_ = std::thread(&GenericCameraDriver::CaptureLoop, this);
-  cap_thread_.detach();
 }
 
 void GenericCameraDriver::Stop() {
   capturing_ = false;
+  const std::lock_guard<std::mutex> lock(cap_thread_mutex_);
+  if (cap_thread_.joinable()) {
+    cap_thread_.join();
+  }
   CloseCamera();
 }
 
