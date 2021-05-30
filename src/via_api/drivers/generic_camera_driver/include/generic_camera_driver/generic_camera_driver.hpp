@@ -35,6 +35,7 @@ class GenericCameraDriver {
   std::thread cap_thread_;
   bool capturing_;
   std::mutex cap_mutex_;
+  std::mutex cap_thread_mutex_;
 
   int image_height_;
   int image_width_;

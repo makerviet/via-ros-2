@@ -44,17 +44,29 @@ GenericCameraNode::GenericCameraNode(const rclcpp::NodeOptions &node_options)
 void GenericCameraNode::StartCallback(
     std_srvs::srv::Trigger::Request::SharedPtr req,
     std_srvs::srv::Trigger::Response::SharedPtr res) {
-  driver_->Start();
+  try {
+    driver_->Start();
+  } catch (const std::runtime_error& e) {
+    res->success = false;
+    res->message = e.what();
+    return;
+  }
   res->success = true;
-  res->message = "Successfully started motor.";
+  res->message = "Successfully started camera.";
 }
 
 void GenericCameraNode::StopCallback(
     std_srvs::srv::Trigger::Request::SharedPtr req,
     std_srvs::srv::Trigger::Response::SharedPtr res) {
-  driver_->Stop();
+  try {
+    driver_->Stop();
+  } catch (const std::runtime_error& e) {
+    res->success = false;
+    res->message = e.what();
+    return;
+  }
   res->success = true;
-  res->message = "Successfully stopped motor.";
+  res->message = "Successfully stopped camera.";
 }
 
 void GenericCameraNode::ImageCallback(const cv::Mat &frame) {
@@ -62,7 +74,8 @@ void GenericCameraNode::ImageCallback(const cv::Mat &frame) {
       via::converters::ImageConverter::OpenCVMatToImageMsg(frame));
 
   std::shared_ptr<via_definitions::msg::CameraInfo> camera_info_msg_(
-      new via_definitions::msg::CameraInfo(camera_info_manager_->getCameraInfo()));
+      new via_definitions::msg::CameraInfo(
+          camera_info_manager_->getCameraInfo()));
 
   rclcpp::Time timestamp = this->get_clock()->now();
 
