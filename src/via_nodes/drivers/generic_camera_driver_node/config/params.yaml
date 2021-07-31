@@ -1,5 +1,5 @@
 camera:
-  generic_camera_node:
+  generic_camera_driver_node:
     ros__parameters:
       camera_calibration_file: file:///workspaces/via-sdk/src/via_nodes/drivers/camera_nodes/config/camera.yaml
       file_name: "0"

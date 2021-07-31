@@ -21,16 +21,8 @@ include_directories(include ${cv_bridge_INCLUDE_DIRS})
 add_library(generic_camera_driver SHARED
   include/generic_camera_driver/generic_camera_driver.hpp
   src/generic_camera_driver.cpp)
-target_compile_definitions(generic_camera_driver
-  PRIVATE "COMPOSITION_BUILDING_DLL")
-
 ament_target_dependencies(generic_camera_driver
     "OpenCV")
-
-target_include_directories(generic_camera_driver
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>)
 
 install(
   DIRECTORY include/

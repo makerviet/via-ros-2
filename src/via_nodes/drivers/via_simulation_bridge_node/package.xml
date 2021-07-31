@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-    <name>via_camera_nodes</name>
+    <name>via_simulation_bridge_node</name>
     <version>0.0.1</version>
     <description>Generic camera driver on ROS 2</description>
     <maintainer email="makerhanoi@gmail.com">MakerHanoi</maintainer>
@@ -16,7 +16,7 @@
     <depend>via_definitions</depend>
     <depend>via_converters</depend>
     <depend>std_srvs</depend>
-    <depend>generic_camera_driver</depend>
+    <depend>via_simulation_bridge</depend>
 
     <test_depend>ament_lint_auto</test_depend>
     <test_depend>ament_lint_common</test_depend>

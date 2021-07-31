@@ -13,15 +13,15 @@ def generate_launch_description():
 
     ld = LaunchDescription()
     config = os.path.join(
-        get_package_share_directory('via_camera_nodes'),
+        get_package_share_directory('via_simulation_bridge_node'),
         'config',
         'params.yaml'
     )
 
     node = Node(
-        package='via_camera_nodes',
-        executable='generic_camera_node',
-        name='generic_camera_node',
+        package='via_simulation_bridge_node',
+        executable='via_simulation_bridge_node',
+        name='via_simulation_bridge_node',
         namespace='/camera',
         parameters=[
                 config
