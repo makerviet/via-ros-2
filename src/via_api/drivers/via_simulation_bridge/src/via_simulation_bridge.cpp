@@ -11,7 +11,7 @@ VIASimulationBridge::VIASimulationBridge(
     const std::string websocket_server_path,
     std::function<void(cv::Mat)> callback) {
   callback_ = callback;
-  capturing_ = true;
+  is_active_ = true;
 
   ws_client = std::make_shared<WsClient>(websocket_server_path);
   ws_client->on_message = [this](shared_ptr<WsClient::Connection> connection,
@@ -27,7 +27,7 @@ VIASimulationBridge::VIASimulationBridge(
     std::string dec_jpg = base64_decode(json_data["image"]);
     std::vector<uchar> data(dec_jpg.begin(), dec_jpg.end());
     cv::Mat img = cv::imdecode(cv::Mat(data), 1);
-    if (capturing_) {
+    if (is_active_) {
       callback_(img);
     }
 
@@ -36,9 +36,10 @@ VIASimulationBridge::VIASimulationBridge(
     last_in_message_time_mutex_.unlock();
   };
 
-  ws_client->on_open = [](shared_ptr<WsClient::Connection> connection) {
+  ws_client->on_open = [this](shared_ptr<WsClient::Connection> connection) {
     cout << "Opened connection" << endl;
     cout << connection << endl;
+    ws_connection_ = connection;
   };
 
   ws_client->on_close = [this](shared_ptr<WsClient::Connection> /*connection*/,
@@ -58,7 +59,7 @@ VIASimulationBridge::VIASimulationBridge(
   // Websocket monitoring
   std::thread t([this]() {
     while (true) {
-      cout << "Hey" << endl;
+      cout << "Ping" << endl;
       std::this_thread::sleep_for(std::chrono::seconds(1));
       last_in_message_time_mutex_.lock();
       auto stop = std::chrono::high_resolution_clock::now();
@@ -96,7 +97,7 @@ void VIASimulationBridge::OpenConnection() { ws_client->start(); }
 void VIASimulationBridge::CloseConnection() { ws_client->stop(); }
 
 void VIASimulationBridge::Start() {
-  if (capturing_) {
+  if (is_active_) {
     std::cerr << "Simulation bridge is still running. Please stop it before "
                  "starting again."
               << std::endl;
@@ -110,12 +111,31 @@ void VIASimulationBridge::Start() {
     throw excp;
   }
 
-  capturing_ = true;
+  is_active_ = true;
 }
 
 void VIASimulationBridge::Stop() {
-  capturing_ = false;
+  is_active_ = false;
   CloseConnection();
+}
+
+void VIASimulationBridge::setThrottle(float throttle) {
+  current_throttle_ = throttle;
+  sendCommand();
+}
+
+void VIASimulationBridge::setSteering(float steering) {
+  current_steering_ = steering;
+  sendCommand();
+}
+
+void VIASimulationBridge::sendCommand() {
+  json data;
+  data["throttle"] = current_throttle_;
+  data["steering"] = current_steering_;
+  if (is_active_) {
+    ws_connection_->send(data.dump());
+  }
 }
 
 }  // namespace simulation

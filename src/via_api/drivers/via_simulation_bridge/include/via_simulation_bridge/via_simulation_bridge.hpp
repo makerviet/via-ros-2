@@ -36,12 +36,21 @@ class VIASimulationBridge {
   void CloseConnection();
   void Reconnect();
 
+  void setThrottle(float throttle);
+  void setSteering(float steering);
+  void sendCommand();
+
  private:
   std::shared_ptr<WsClient> ws_client;
+  std::mutex connection_mutex_;
+  std::shared_ptr<SimpleWeb::SocketClient<SimpleWeb::WS>::Connection> ws_connection_ GUARDED_BY(connection_mutex_);
+
   cv::Mat frame_;
-  bool capturing_ = true;
+  bool is_active_ = true;
   std::chrono::time_point<std::chrono::high_resolution_clock> last_in_message_time_;
   std::mutex last_in_message_time_mutex_;
+  float current_throttle_ = 0;
+  float current_steering_ = 0;
 
   std::function<void(cv::Mat)> callback_;
   

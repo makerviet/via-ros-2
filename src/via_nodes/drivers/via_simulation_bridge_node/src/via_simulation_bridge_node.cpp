@@ -31,22 +31,28 @@ VIASimulationBridgeNode::VIASimulationBridgeNode(
       "stop", std::bind(&VIASimulationBridgeNode::StopCallback, this,
                         std::placeholders::_1, std::placeholders::_2));
 
+  // Initialize car control signals
+  throttle_sub_ = this->create_subscription<std_msgs::msg::Float32>(
+      "set_throttle", 10, std::bind(&VIASimulationBridgeNode::ThrottleCallback, this, std::placeholders::_1));
+  steering_sub_ = this->create_subscription<std_msgs::msg::Float32>(
+      "set_steering", 10, std::bind(&VIASimulationBridgeNode::SteeringCallback, this, std::placeholders::_1));
+
   // Initialize camera driver and start reading images
-  driver_ = std::make_shared<VIASimulationBridge>(
+  bridge_ = std::make_shared<VIASimulationBridge>(
       "127.0.0.1:4567/simulation",
       std::bind(&VIASimulationBridgeNode::ImageCallback, this,
                 std::placeholders::_1));
 }
 
 VIASimulationBridgeNode::~VIASimulationBridgeNode() {
-  driver_->Stop();
+  bridge_->Stop();
 }
 
 void VIASimulationBridgeNode::StartCallback(
     std_srvs::srv::Trigger::Request::SharedPtr req,
     std_srvs::srv::Trigger::Response::SharedPtr res) {
   try {
-    driver_->Start();
+    bridge_->Start();
   } catch (const std::runtime_error &e) {
     res->success = false;
     res->message = e.what();
@@ -60,7 +66,7 @@ void VIASimulationBridgeNode::StopCallback(
     std_srvs::srv::Trigger::Request::SharedPtr req,
     std_srvs::srv::Trigger::Response::SharedPtr res) {
   try {
-    driver_->Stop();
+    bridge_->Stop();
   } catch (const std::runtime_error &e) {
     res->success = false;
     res->message = e.what();
@@ -89,8 +95,16 @@ void VIASimulationBridgeNode::ImageCallback(const cv::Mat &frame) {
   camera_info_pub_.publish(image_msg_, camera_info_msg_);
 }
 
+void VIASimulationBridgeNode::ThrottleCallback(const std_msgs::msg::Float32::SharedPtr msg) {
+  bridge_->setThrottle(msg->data);
+}
+
+void VIASimulationBridgeNode::SteeringCallback(const std_msgs::msg::Float32::SharedPtr msg) {
+  bridge_->setSteering(msg->data);
+}
+
 void VIASimulationBridgeNode::Stop() {
-  driver_->Stop();
+  bridge_->Stop();
 }
 
 }  // namespace simulation
