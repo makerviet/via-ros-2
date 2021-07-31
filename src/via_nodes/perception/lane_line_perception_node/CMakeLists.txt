@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 ### Build the nodes
-project(simple_lane_line_perception_node)
+project(lane_line_perception_node)
 
 ## dependencies
 find_package(ament_cmake REQUIRED)
@@ -19,10 +19,10 @@ find_package(camera_calibration_parsers REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(cv_bridge REQUIRED)
 
-ament_auto_add_executable(simple_lane_line_perception_node
-  "src/simple_lane_line_perception_node.cpp")
+ament_auto_add_executable(lane_line_perception_node
+  "src/lane_line_perception_node.cpp")
 
-ament_target_dependencies(simple_lane_line_perception_node
+ament_target_dependencies(lane_line_perception_node
   std_srvs OpenCV rclcpp rclcpp_components
   camera_info_manager image_transport camera_calibration_parsers
   via_definitions via_converters cv_bridge)

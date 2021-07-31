@@ -30,9 +30,9 @@ def generate_launch_description():
     ld.add_action(node)
 
     # node2 = Node(
-    #     package='simple_lane_line_perception_node',
-    #     executable='simple_lane_line_perception_node',
-    #     name='simple_lane_line_perception_node',
+    #     package='lane_line_perception_node',
+    #     executable='lane_line_perception_node',
+    #     name='lane_line_perception_node',
     #     namespace='/perception/laneline'
     # )
     # ld.add_action(node2)    

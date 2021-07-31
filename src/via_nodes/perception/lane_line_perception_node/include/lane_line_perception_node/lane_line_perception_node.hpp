@@ -1,5 +1,5 @@
-#ifndef SIMPLE_LANE_LINE_PERCEPTION_HPP_
-#define SIMPLE_LANE_LINE_PERCEPTION_HPP_
+#ifndef LANE_LINE_PERCEPTION_HPP_
+#define LANE_LINE_PERCEPTION_HPP_
 
 #include <stdio.h>
 
@@ -23,15 +23,16 @@ namespace via {
 namespace perception {
 namespace laneline {
 
-class SimpleLaneLinePerceptionNode : public rclcpp::Node {
+class LaneLinePerceptionNode : public rclcpp::Node {
  public:
-  SimpleLaneLinePerceptionNode(const rclcpp::NodeOptions &node_options);
+  LaneLinePerceptionNode(const rclcpp::NodeOptions &node_options);
 
  private:
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_sub_;
   cv::Mat frame_;
 
   void ImageCallback(const sensor_msgs::msg::Image::SharedPtr msg);
+  void DetectLaneLines(const cv::Mat &org);
 };
 }  // namespace laneline
 }  // namespace perception
