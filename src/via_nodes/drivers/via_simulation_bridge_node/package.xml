@@ -3,9 +3,12 @@
 <package format="2">
     <name>via_simulation_bridge_node</name>
     <version>0.0.1</version>
-    <description>Generic camera driver on ROS 2</description>
+    <description>Simulation bridge node for VIA Self-driving Cars Simulation on ROS 2.</description>
+
     <maintainer email="makerhanoi@gmail.com">MakerHanoi</maintainer>
     <maintainer email="air.team.2050@gmail.com">AIR</maintainer>
+    <author email="vietanh.dev@gmail.com">Viet Anh Nguyen</author>
+
     <license>MIT</license>
 
     <buildtool_depend>ament_cmake_auto</buildtool_depend>
