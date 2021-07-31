@@ -1,5 +1,12 @@
 # VIA Car Instruction
 
+- Build
+
+```
+colcon build
+source install/setup.bash
+```
+
 - Launch system:
 
 ```

@@ -11,7 +11,7 @@ LaneLinePerceptionNode::LaneLinePerceptionNode(
     const rclcpp::NodeOptions &node_options)
     : Node("lane_line_perception", node_options) {
   image_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "/simulation/image", 10,
+      "/simulation/image", 1,
       std::bind(&LaneLinePerceptionNode::ImageCallback, this,
                 std::placeholders::_1));
 }

@@ -1,0 +1,48 @@
+#include "layer.h"
+#include "net.h"
+
+#if defined(USE_NCNN_SIMPLEOCV)
+#include "simpleocv.h"
+#else
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#endif
+#include <float.h>
+#include <stdio.h>
+
+#include <vector>
+
+#include "traffic_sign_detector_yolox/traffic_sign_detector_yolox.hpp"
+
+namespace via {
+namespace perception {
+namespace traffic_sign {
+
+using namespace std;
+
+DEFINE_LAYER_CREATOR(YoloV5Focus)
+
+TrafficSignDetectorYOLOX::TrafficSignDetectorYOLOX() {
+  yolox = new ncnn::Net();
+  yolox->opt.use_vulkan_compute = true;
+  // yolox.opt.use_bf16_storage = true;
+
+  yolox->register_custom_layer("YoloV5Focus", YoloV5Focus_layer_creator);
+
+  // original pretrained model from https://github.com/yolox
+  // TODO ncnn model https://github.com/nihui/ncnn-assets/tree/master/models
+  yolox->load_param("data/models/trafficsign_nano.param");
+  yolox->load_model("data/models/trafficsign_nano.bin");
+}
+
+void TrafficSignDetectorYOLOX::Detect(const cv::Mat& bgr) {
+  std::vector<Object> objects;
+  yolox_mutex.lock();
+  detect_yolox(yolox, bgr, objects);
+  yolox_mutex.unlock();
+}
+
+}  // namespace traffic_sign
+}  // namespace perception
+}  // namespace via

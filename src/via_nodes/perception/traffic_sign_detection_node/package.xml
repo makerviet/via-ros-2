@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>lane_line_perception_node</name>
+  <name>traffic_sign_detection_node</name>
   <version>0.0.1</version>
-  <description>Simple lane line perception node node for VIA Autonomous.</description>
+  <description>Simple traffic sign detection node for VIA Autonomous.</description>
 
   <maintainer email="makerhanoi@gmail.com">MakerHanoi</maintainer>
   <maintainer email="air.team.2050@gmail.com">AIR</maintainer>
@@ -22,6 +22,7 @@
   <depend>launch_ros</depend>
   <depend>via_common</depend>
   <depend>cv_bridge</depend>
+  <depend>traffic_sign_detector_yolox</depend>
 
   <test_depend>ament_lint_auto</test_depend>
 
