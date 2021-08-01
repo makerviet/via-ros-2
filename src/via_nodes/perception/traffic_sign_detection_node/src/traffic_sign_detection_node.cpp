@@ -20,12 +20,11 @@ TrafficSignDetectionNode::TrafficSignDetectionNode(
 
 void TrafficSignDetectionNode::ImageCallback(
     const sensor_msgs::msg::Image::SharedPtr msg) {
+  std::cout << "Ping" << std::endl;
   cv_bridge::CvImagePtr cv_ptr;
   cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-
   cv::Mat img = cv_ptr->image;
   DetectSigns(img);
-  std::cout << "Ping" << std::endl;
 }
 
 void TrafficSignDetectionNode::DetectSigns(const cv::Mat &org) {

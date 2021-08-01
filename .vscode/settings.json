@@ -73,7 +73,13 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "codecvt": "cpp",
+        "forward_list": "cpp",
+        "unordered_set": "cpp",
+        "netfwd": "cpp",
+        "regex": "cpp",
+        "valarray": "cpp"
     },
     // Autocomplete from ros python packages
     "python.autoComplete.extraPaths": [

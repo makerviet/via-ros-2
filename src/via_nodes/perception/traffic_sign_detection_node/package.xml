@@ -21,6 +21,7 @@
   <depend>image_transport</depend>
   <depend>launch_ros</depend>
   <depend>via_common</depend>
+  <depend>via_converters</depend>
   <depend>cv_bridge</depend>
   <depend>traffic_sign_detector_yolox</depend>
 

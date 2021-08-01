@@ -11,7 +11,6 @@
 #include <mutex>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-#include <simple_websocket_server/client_ws.hpp>
 #include <string>
 #include <thread>
 

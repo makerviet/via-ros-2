@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>traffic_sign_detector_yolox</name>
+  <name>lane_line_detector_simple</name>
   <version>0.0.1</version>
-  <description>Traffic sign detection based on YOLOX.</description>
+  <description>Simple lane line detector based on image processing.</description>
   
   <maintainer email="makerhanoi@gmail.com">MakerHanoi</maintainer>
   <maintainer email="air.team.2050@gmail.com">AIR</maintainer>
@@ -14,7 +14,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>libopencv-dev</depend>
-  <depend>via_common</depend>
+  <depend>via_definitions</depend>
 
   <test_depend>ament_lint_auto</test_depend>
 

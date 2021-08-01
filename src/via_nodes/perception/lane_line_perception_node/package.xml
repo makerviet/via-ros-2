@@ -18,11 +18,12 @@
   <depend>rclcpp_components</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
-  <depend>image_transport</depend>
   <depend>launch_ros</depend>
   <depend>via_common</depend>
+  <depend>via_converters</depend>
+  <depend>image_transport</depend>
+  <depend>lane_line_detector_simple</depend>
   <depend>cv_bridge</depend>
-
   <test_depend>ament_lint_auto</test_depend>
 
   <export>
