@@ -29,12 +29,27 @@ def generate_launch_description():
     )
     ld.add_action(node)
 
-    # node2 = Node(
-    #     package='lane_line_perception_node',
-    #     executable='lane_line_perception_node',
-    #     name='lane_line_perception_node',
-    #     namespace='/perception/laneline'
-    # )
-    # ld.add_action(node2)    
+    node2 = Node(
+        package='lane_line_perception_node',
+        executable='lane_line_perception_node',
+        name='lane_line_perception_node',
+        namespace='/perception/laneline'
+    )
+    ld.add_action(node2)
+
+    node3 = Node(
+        package='traffic_sign_detection_node',
+        executable='traffic_sign_detection_node',
+        name='traffic_sign_detection_node',
+        namespace='/perception/traffic_sign'
+    )
+    ld.add_action(node3)
+
+    node4 = Node(
+        package='visualization_node',
+        executable='visualization_node',
+        name='visualization_node'
+    )
+    ld.add_action(node4)        
 
     return ld

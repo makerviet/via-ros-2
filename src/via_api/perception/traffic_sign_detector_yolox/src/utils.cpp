@@ -111,7 +111,7 @@ void generate_yolox_proposals(std::vector<GridAndStride> grid_strides,
                                      const ncnn::Mat& feat_blob,
                                      float prob_threshold,
                                      std::vector<Object>& objects) {
-  const int num_grid = feat_blob.h;
+  // const int num_grid = feat_blob.h;
   fprintf(stderr, "output height: %d, width: %d, channels: %d, dims:%d\n",
           feat_blob.h, feat_blob.w, feat_blob.c, feat_blob.dims);
 
@@ -287,9 +287,9 @@ int detect_yolox(ncnn::Net* yolox, const cv::Mat& bgr,
     objects[i].rect.height = y1 - y0;
   }
 
-  cv::Mat viz;
-  viz = bgr.clone();
-  draw_objects(viz, objects);
+  // cv::Mat viz;
+  // viz = bgr.clone();
+  // draw_objects(viz, objects);
 
   return 0;
 }

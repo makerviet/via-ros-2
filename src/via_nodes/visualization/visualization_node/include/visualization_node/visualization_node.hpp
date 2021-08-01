@@ -20,9 +20,12 @@
 #include <string>
 #include <thread>
 #include <via_converters/lane_converter.hpp>
+#include <via_converters/traffic_sign_converter.hpp>
 #include <via_definitions/msg/lane.hpp>
 #include <via_definitions/perception/lane_line.hpp>
 #include <lane_line_detector_simple/lane_line_detector_simple.hpp>
+#include <via_definitions/msg/traffic_signs.hpp>
+#include <via_definitions/perception/traffic_sign.hpp>
 
 namespace via {
 namespace visualization {
@@ -36,15 +39,23 @@ class VisualizationNode : public rclcpp::Node {
   std::mutex img_mutex_;
   std::vector<via::definitions::perception::LaneLine> lane_lines_;
   std::mutex lane_lines_mutex_;
+  std::vector<via::definitions::perception::TrafficSign> traffic_signs_;
+  std::mutex traffic_signs_mutex_;
 
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_sub_;
   rclcpp::Subscription<via_definitions::msg::Lane>::SharedPtr lane_sub_;
+  rclcpp::Subscription<via_definitions::msg::TrafficSigns>::SharedPtr traffic_signs_sub_;
+
   void ImageCallback(const sensor_msgs::msg::Image::SharedPtr msg);
   void LaneCallback(const via_definitions::msg::Lane::SharedPtr msg);
+  void TrafficSignsCallback(const via_definitions::msg::TrafficSigns::SharedPtr msg);
   void Render();
   void RenderLaneLines(
       cv::Mat &img,
       std::vector<via::definitions::perception::LaneLine> lane_lines);
+  void RenderTrafficSigns(
+      cv::Mat &img,
+      std::vector<via::definitions::perception::TrafficSign> traffic_signs);
 };
 }  // namespace visualization
 }  // namespace via

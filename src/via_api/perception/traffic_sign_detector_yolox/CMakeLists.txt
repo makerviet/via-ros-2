@@ -15,6 +15,7 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_auto REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(via_common REQUIRED)
+find_package(via_definitions REQUIRED)
 
 add_subdirectory(ncnn)
 execute_process (

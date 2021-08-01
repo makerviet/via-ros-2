@@ -30,7 +30,6 @@
 #endif
 #include <float.h>
 #include <stdio.h>
-
 #include <vector>
 
 namespace via {

@@ -21,9 +21,9 @@ find_package(image_transport REQUIRED)
 include_directories(include ${cv_bridge_INCLUDE_DIRS})
 
 add_library(via_converters STATIC
-  # include/via_converters/image_converter.hpp
   src/image_converter.cpp
   src/lane_converter.cpp
+  src/traffic_sign_converter.cpp
 )
 
 ament_target_dependencies(via_converters OpenCV sensor_msgs via_definitions)

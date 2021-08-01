@@ -13,6 +13,7 @@
 #include <opencv2/imgproc.hpp>
 #include <string>
 #include <thread>
+#include <via_definitions/perception/traffic_sign.hpp>
 
 #include "utils.hpp"
 
@@ -23,7 +24,7 @@ namespace traffic_sign {
 class TrafficSignDetectorYOLOX {
  public:
   TrafficSignDetectorYOLOX();
-  void Detect(const cv::Mat& bgr);
+  std::vector<via::definitions::perception::TrafficSign> Detect(const cv::Mat& bgr);
 
  private:
   ncnn::Net *yolox;
