@@ -24,11 +24,13 @@ class LaneLineDetectorSimple {
   LaneLineDetectorSimple();
   std::vector<via::definitions::perception::LaneLine> Detect(
       const cv::Mat &bgr);
+  static void InitPerspectiveMatrices();
+  static cv::Mat &getPerspectiveMatrix();
+  static cv::Mat &getInvertPerspectiveMatrix();
 
  private:
-  cv::Mat perspective_matrix;
-  cv::Mat inverted_perspective_matrix;
-
+  static cv::Mat perspective_matrix_;
+  static cv::Mat inverted_perspective_matrix_;
   std::vector<cv::Point2f> SlidingWindow(cv::Mat image, cv::Rect window);
   std::vector<cv::Point2f> FindTargetPoints(
       int im_width, int im_height, const std::vector<cv::Point2f> &left_pts,

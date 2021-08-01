@@ -12,7 +12,14 @@ namespace lane_line {
 using namespace std;
 using namespace cv;
 
+cv::Mat LaneLineDetectorSimple::perspective_matrix_;
+cv::Mat LaneLineDetectorSimple::inverted_perspective_matrix_;
+
 LaneLineDetectorSimple::LaneLineDetectorSimple() {
+  InitPerspectiveMatrices();
+}
+
+void LaneLineDetectorSimple::InitPerspectiveMatrices() {
   // Prepare things that don't need to be computed on every frame.
   Point2f src_vertices[4];
 
@@ -34,25 +41,42 @@ LaneLineDetectorSimple::LaneLineDetectorSimple() {
   dst_vertices[3] = Point(x_delta, 480);
 
   // Prepare matrix for transform and get the warped image
-  perspective_matrix = getPerspectiveTransform(src_vertices, dst_vertices);
+  perspective_matrix_ = getPerspectiveTransform(src_vertices, dst_vertices);
 
   // For transforming back into original image space
-  invert(perspective_matrix, inverted_perspective_matrix);
+  invert(perspective_matrix_, inverted_perspective_matrix_);
 }
 
-std::vector<via::definitions::perception::LaneLine> LaneLineDetectorSimple::Detect(const cv::Mat &org) {
-  Mat img;  // Working image
+cv::Mat &LaneLineDetectorSimple::getPerspectiveMatrix() {
+  if (perspective_matrix_.empty()) {
+    InitPerspectiveMatrices();
+  }
+  return perspective_matrix_;
+}
+
+cv::Mat &LaneLineDetectorSimple::getInvertPerspectiveMatrix() {
+  if (inverted_perspective_matrix_.empty()) {
+    InitPerspectiveMatrices();
+  }
+  return inverted_perspective_matrix_;
+}
+
+std::vector<via::definitions::perception::LaneLine>
+LaneLineDetectorSimple::Detect(const cv::Mat &org) {
+  Mat img;                     // Working image
   Mat dst(480, 640, CV_8UC3);  // Destination for warped image
   Mat viz_img = org.clone();
 
-  via::definitions::perception::LaneLine left_line; left_line.confidence = 1.0;
-  via::definitions::perception::LaneLine right_line; right_line.confidence = 1.0;
+  via::definitions::perception::LaneLine left_line;
+  left_line.confidence = 1.0;
+  via::definitions::perception::LaneLine right_line;
+  right_line.confidence = 1.0;
   via::definitions::perception::LaneLine target_line;
 
   resize(org, img, Size(640, 480));
 
   // Generate bird's eye view
-  warpPerspective(img, dst, perspective_matrix, dst.size(), INTER_LINEAR,
+  warpPerspective(img, dst, perspective_matrix_, dst.size(), INTER_LINEAR,
                   BORDER_CONSTANT);
 
   // Convert to gray
@@ -66,7 +90,7 @@ std::vector<via::definitions::perception::LaneLine> LaneLineDetectorSimple::Dete
 
   Mat mask, processed;
   bitwise_or(mask_yellow, mask_white, mask);  // Combine the two masks
-  bitwise_and(img, mask, processed);        // Extrect what matches
+  bitwise_and(img, mask, processed);          // Extrect what matches
 
   // Blur the image a bit so that gaps are smoother
   const Size kernel_size = Size(9, 9);
@@ -94,7 +118,7 @@ std::vector<via::definitions::perception::LaneLine> LaneLineDetectorSimple::Dete
   vector<Point2f> left_pts = SlidingWindow(processed, Rect(237, 460, 60, 20));
   vector<Point2f> right_pts = SlidingWindow(processed, Rect(340, 460, 60, 20));
 
-  int lane_width = 160;
+  int lane_width = 120;
   if (left_pts.empty() && !right_pts.empty()) {
     for (size_t i = 0; i < right_pts.size(); ++i) {
       left_pts.push_back(Point2f(right_pts[i].x - lane_width, right_pts[i].y));
@@ -112,7 +136,7 @@ std::vector<via::definitions::perception::LaneLine> LaneLineDetectorSimple::Dete
 
   if (!left_pts.empty()) {
     // Transform points back  into original image space
-    perspectiveTransform(left_pts, out_pts, inverted_perspective_matrix);
+    perspectiveTransform(left_pts, out_pts, inverted_perspective_matrix_);
     // Draw the points onto the out image
     for (size_t i = 0; i < out_pts.size() - 1; ++i) {
       line(viz_img, out_pts[i], out_pts[i + 1], Scalar(255, 0, 0), 3);
@@ -121,13 +145,13 @@ std::vector<via::definitions::perception::LaneLine> LaneLineDetectorSimple::Dete
     all_pts.push_back(
         Point(out_pts[out_pts.size() - 1].x, out_pts[out_pts.size() - 1].y));
     for (size_t i = 0; i < left_pts.size() - 1; ++i)  // Draw a line on the
-                                                   // processed image
+                                                      // processed image
       line(out, left_pts[i], left_pts[i + 1], Scalar(255, 0, 0), 3);
   }
 
   if (!right_pts.empty()) {
     // Transform points back  into original image space
-    perspectiveTransform(right_pts, out_pts, inverted_perspective_matrix);
+    perspectiveTransform(right_pts, out_pts, inverted_perspective_matrix_);
     // Draw the other lane and append points
     for (size_t i = 0; i < out_pts.size() - 1; ++i) {
       line(viz_img, out_pts[i], out_pts[i + 1], Scalar(0, 0, 255), 3);
@@ -141,7 +165,7 @@ std::vector<via::definitions::perception::LaneLine> LaneLineDetectorSimple::Dete
 
   if (!target_pts.empty()) {
     // Transform points back  into original image space
-    perspectiveTransform(target_pts, out_pts, inverted_perspective_matrix);
+    perspectiveTransform(target_pts, out_pts, inverted_perspective_matrix_);
     // Draw the other lane and append points
     for (size_t i = 0; i < out_pts.size() - 1; ++i) {
       line(viz_img, out_pts[i], out_pts[i + 1], Scalar(0, 255, 255), 3);
@@ -160,15 +184,16 @@ std::vector<via::definitions::perception::LaneLine> LaneLineDetectorSimple::Dete
   }
 
   // Show results
-  imshow("Result", out);
-  imshow("Overlay", viz_img);
-  waitKey(1);
+  // imshow("Result", out);
+  // imshow("Overlay", viz_img);
+  // waitKey(1);
 
   left_line.points = left_pts;
   right_line.points = right_pts;
   target_line.points = target_pts;
   target_line.confidence = min(left_line.confidence, right_line.confidence);
-  std::vector<via::definitions::perception::LaneLine> lane_lines {left_line, right_line, target_line};
+  std::vector<via::definitions::perception::LaneLine> lane_lines{
+      left_line, right_line, target_line};
   return lane_lines;
 }
 
@@ -203,7 +228,8 @@ vector<Point2f> LaneLineDetectorSimple::SlidingWindow(Mat image, Rect window) {
 
     float avgX = 0.0f;
 
-    for (size_t i = 0; i < locations.size(); ++i)  // Calculate average X position
+    for (size_t i = 0; i < locations.size();
+         ++i)  // Calculate average X position
     {
       float x = locations[i].x;
       avgX += window.x + x;
@@ -261,8 +287,8 @@ std::vector<Point2f> LaneLineDetectorSimple::FindTargetPoints(
   arr.push_back(all_pts);
   fillPoly(drivable_area, arr, Scalar(255));
 
-  imshow("Drivable", drivable_area);
-  waitKey(1);
+  // imshow("Drivable", drivable_area);
+  // waitKey(1);
 
   // Find interested area by y-axis
   float min_y = max(0.0f, min(min(left_pts[0].y, left_pts[-1].y),

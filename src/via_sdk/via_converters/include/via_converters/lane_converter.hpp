@@ -11,8 +11,12 @@ class LaneConverter {
  public:
   static via_definitions::msg::Lane LaneLinesToLaneMsg(
       const std::vector<via::definitions::perception::LaneLine>& lane_lines);
+  static std::vector<via::definitions::perception::LaneLine> LaneMsgToLaneLines(
+      const via_definitions::msg::Lane& lane);
   static via_definitions::msg::LaneLine LaneLineToLaneLineMsg(
       const via::definitions::perception::LaneLine& lane_line);
+  static via::definitions::perception::LaneLine LaneLineMsgToLaneLine(
+      const via_definitions::msg::LaneLine& lane_line);
 };
 
 }  // namespace converters
