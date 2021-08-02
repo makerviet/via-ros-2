@@ -50,6 +50,13 @@ def generate_launch_description():
         executable='visualization_node',
         name='visualization_node'
     )
-    ld.add_action(node4)        
+    ld.add_action(node4)
+
+    node5 = Node(
+        package='simple_control_node',
+        executable='simple_control_node',
+        name='simple_control_node'
+    )
+    ld.add_action(node5)    
 
     return ld

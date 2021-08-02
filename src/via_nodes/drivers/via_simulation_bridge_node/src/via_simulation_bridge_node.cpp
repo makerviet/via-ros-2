@@ -18,7 +18,7 @@ VIASimulationBridgeNode::VIASimulationBridgeNode(
                                            "file://config/camera.yaml");
 
   // Initialize camera publisher
-  camera_info_pub_ = image_transport::create_camera_publisher(this, "image");
+  camera_info_pub_ = image_transport::create_camera_publisher(this, "/simulation/image");
   camera_info_manager_ =
       std::make_shared<camera_info_manager::CameraInfoManager>(this);
   camera_info_manager_->loadCameraInfo(camera_calibration_file_param_);
@@ -33,9 +33,9 @@ VIASimulationBridgeNode::VIASimulationBridgeNode(
 
   // Initialize car control signals
   throttle_sub_ = this->create_subscription<std_msgs::msg::Float32>(
-      "set_throttle", 10, std::bind(&VIASimulationBridgeNode::ThrottleCallback, this, std::placeholders::_1));
+      "/simulation/set_throttle", 10, std::bind(&VIASimulationBridgeNode::ThrottleCallback, this, std::placeholders::_1));
   steering_sub_ = this->create_subscription<std_msgs::msg::Float32>(
-      "set_steering", 10, std::bind(&VIASimulationBridgeNode::SteeringCallback, this, std::placeholders::_1));
+      "/simulation/set_steering", 10, std::bind(&VIASimulationBridgeNode::SteeringCallback, this, std::placeholders::_1));
 
   // Initialize camera driver and start reading images
   bridge_ = std::make_shared<VIASimulationBridge>(

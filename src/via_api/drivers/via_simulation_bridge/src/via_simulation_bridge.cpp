@@ -58,6 +58,7 @@ VIASimulationBridge::VIASimulationBridge(
 
   // Websocket monitoring
   std::thread t([this]() {
+    std::this_thread::sleep_for(std::chrono::seconds(10));
     while (true) {
       cout << "Ping" << endl;
       std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -68,7 +69,7 @@ VIASimulationBridge::VIASimulationBridge(
               stop - last_in_message_time_)
               .count();
       cout << conn_lost_duration << endl;
-      if (conn_lost_duration > 5000) {  // Connection lost
+      if (conn_lost_duration > 2000) {  // Connection lost
         cout << "Connection lost. Trying to reconnect..." << endl;
         Reconnect();
         std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -87,9 +88,10 @@ void VIASimulationBridge::Reconnect() {
   restart_timer_.setTimeout(
       [&]() {
         ws_client->stop();
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         ws_client->start();
       },
-      1000);
+      500);
 }
 
 void VIASimulationBridge::OpenConnection() { ws_client->start(); }
