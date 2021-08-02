@@ -15,6 +15,9 @@ using namespace cv;
 cv::Mat LaneLineDetectorSimple::perspective_matrix_;
 cv::Mat LaneLineDetectorSimple::inverted_perspective_matrix_;
 
+int LaneLineDetectorSimple::x_delta = 0;
+int LaneLineDetectorSimple::y_delta = 0;
+
 LaneLineDetectorSimple::LaneLineDetectorSimple() {
   InitPerspectiveMatrices();
 }
@@ -26,8 +29,8 @@ void LaneLineDetectorSimple::InitPerspectiveMatrices() {
   // Define points that are used for generating bird's eye view. This was done
   // by trial and error. Best to prepare sliders and configure for each use
   // case.
-  int x_delta = 250;
-  int y_delta = 200;
+  x_delta = 1800;
+  y_delta = 200;
   src_vertices[0] = Point(0, y_delta);
   src_vertices[1] = Point(640, y_delta);
   src_vertices[2] = Point(640, 480);
@@ -35,10 +38,15 @@ void LaneLineDetectorSimple::InitPerspectiveMatrices() {
 
   // Destination vertices. Output is 640 by 480px
   Point2f dst_vertices[4];
-  dst_vertices[0] = Point(0, 0);
-  dst_vertices[1] = Point(640, 0);
-  dst_vertices[2] = Point(640 - x_delta, 480);
-  dst_vertices[3] = Point(x_delta, 480);
+  dst_vertices[0] = Point(-x_delta, 0);
+  dst_vertices[1] = Point(640 + x_delta, 0);
+  dst_vertices[2] = Point(640, 480);
+  dst_vertices[3] = Point(0, 480);
+
+  dst_vertices[0].x += x_delta;
+  dst_vertices[1].x += x_delta;
+  dst_vertices[2].x += x_delta;
+  dst_vertices[3].x += x_delta;
 
   // Prepare matrix for transform and get the warped image
   perspective_matrix_ = getPerspectiveTransform(src_vertices, dst_vertices);
@@ -64,7 +72,7 @@ cv::Mat &LaneLineDetectorSimple::getInvertPerspectiveMatrix() {
 std::vector<via::definitions::perception::LaneLine>
 LaneLineDetectorSimple::Detect(const cv::Mat &org) {
   Mat img;                     // Working image
-  Mat dst(480, 640, CV_8UC3);  // Destination for warped image
+  Mat dst(480, 640 + 2 * x_delta, CV_8UC3);  // Destination for warped image
   Mat viz_img = org.clone();
 
   via::definitions::perception::LaneLine left_line;
@@ -115,10 +123,10 @@ LaneLineDetectorSimple::Detect(const cv::Mat &org) {
   vector<Point2f> out_pts;
 
   // Sliding window for 2 sides
-  vector<Point2f> left_pts = SlidingWindow(processed, Rect(237, 460, 60, 20));
-  vector<Point2f> right_pts = SlidingWindow(processed, Rect(340, 460, 60, 20));
+  vector<Point2f> left_pts = SlidingWindow(processed, Rect(1776, 470, 220, 10));
+  vector<Point2f> right_pts = SlidingWindow(processed, Rect(2241, 470, 220, 10));
 
-  int lane_width = 120;
+  int lane_width = 400;
   if (left_pts.empty() && !right_pts.empty()) {
     for (size_t i = 0; i < right_pts.size(); ++i) {
       left_pts.push_back(Point2f(right_pts[i].x - lane_width, right_pts[i].y));
@@ -132,7 +140,7 @@ LaneLineDetectorSimple::Detect(const cv::Mat &org) {
     right_line.confidence = 0.5;
   }
 
-  vector<Point2f> target_pts = FindTargetPoints(640, 480, left_pts, right_pts);
+  vector<Point2f> target_pts = FindTargetPoints(640 + 2 * x_delta, 480, left_pts, right_pts);
 
   if (!left_pts.empty()) {
     // Transform points back  into original image space
@@ -275,7 +283,7 @@ std::vector<Point2f> LaneLineDetectorSimple::FindTargetPoints(
   }
 
   // Find drivable area
-  cv::Mat drivable_area(im_height, im_width, CV_8UC1);
+  cv::Mat drivable_area = cv::Mat::zeros(im_height, im_width, CV_8UC1);
   vector<Point> all_pts;
   for (size_t i = 0; i < left_pts.size(); ++i) {
     all_pts.push_back(Point(left_pts[i].x, left_pts[i].y));

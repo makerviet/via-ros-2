@@ -17,9 +17,9 @@ SimpleControlNode::SimpleControlNode(const rclcpp::NodeOptions &node_options)
           std::bind(&SimpleControlNode::TrafficSignsCallback, this,
                     std::placeholders::_1));
   throttle_pub_ =
-      this->create_publisher<std_msgs::msg::Float32>("/simulation/set_throttle", 20);
+      this->create_publisher<std_msgs::msg::Float32>("/simulation/set_throttle", 1);
   steering_pub_ =
-      this->create_publisher<std_msgs::msg::Float32>("/simulation/set_steering", 20);
+      this->create_publisher<std_msgs::msg::Float32>("/simulation/set_steering", 1);
 }
 
 void SimpleControlNode::LaneCallback(
@@ -66,18 +66,21 @@ void SimpleControlNode::UpdateControl() {
 
   std::vector<cv::Point2f> target_pts = lane_lines[2].points;
 
-  if (target_pts.size() <= 80) {
+  if (target_pts.size() <= 50) {
     std::cout << "Too few target points for planning & control" << std::endl;
     return;
   }
 
-  float car_x = 320;
-  float target_x = target_pts[-80].x;
+  float car_x = 320 + 1800;
+  float target_x = target_pts[-50].x;
   float diff = car_x - target_x;
-  float steering = - diff / 320 * 5;
+  float steering = - diff / 320 * 1;
+  steering = min(0.5f, max(-0.5f, steering));
+
+  std::cout << "Target x: " << target_x << std::endl;
 
   std_msgs::msg::Float32 throttle_msg;
-  throttle_msg.data = 0.5;
+  throttle_msg.data = 0.3;
   throttle_pub_->publish(throttle_msg);
 
   std_msgs::msg::Float32 steering_msg;

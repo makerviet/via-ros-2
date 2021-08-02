@@ -1,4 +1,4 @@
-#include "via_camera_nodes/generic_camera_node.hpp"
+#include "generic_camera_node/generic_camera_node.hpp"
 
 #include <chrono>
 #include <cstdio>

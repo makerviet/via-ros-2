@@ -44,6 +44,8 @@ class SimpleControlNode : public rclcpp::Node {
   std::vector<via::definitions::perception::TrafficSign> traffic_signs_;
   std::mutex traffic_signs_mutex_;
 
+  float last_angle_ = 0.0; // Last angle to keep steering when see no lane line
+
   void LaneCallback(const via_definitions::msg::Lane::SharedPtr msg);
   void TrafficSignsCallback(const via_definitions::msg::TrafficSigns::SharedPtr msg);
   void UpdateControl();

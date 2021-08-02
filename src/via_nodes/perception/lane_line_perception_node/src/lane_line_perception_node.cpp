@@ -15,7 +15,7 @@ LaneLinePerceptionNode::LaneLinePerceptionNode(
       "/simulation/image", 1,
       std::bind(&LaneLinePerceptionNode::ImageCallback, this,
                 std::placeholders::_1));
-  lane_pub_ = this->create_publisher<via_definitions::msg::Lane>("/perception/lane", 10);
+  lane_pub_ = this->create_publisher<via_definitions::msg::Lane>("/perception/lane", 1);
 }
 
 void LaneLinePerceptionNode::ImageCallback(

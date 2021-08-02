@@ -35,6 +35,9 @@ class LaneLineDetectorSimple {
   std::vector<cv::Point2f> FindTargetPoints(
       int im_width, int im_height, const std::vector<cv::Point2f> &left_pts,
       const std::vector<cv::Point2f> &right_pts);
+
+  static int x_delta;
+  static int y_delta;
 };
 }  // namespace lane_line
 }  // namespace perception
