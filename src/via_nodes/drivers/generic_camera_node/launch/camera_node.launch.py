@@ -19,9 +19,9 @@ def generate_launch_description():
     )
 
     node = Node(
-        package='generic_camera_driver_node',
-        executable='generic_camera_driver_node',
-        name='generic_camera_driver_node',
+        package='generic_camera_node',
+        executable='generic_camera_node',
+        name='generic_camera_node',
         namespace='/camera',
         parameters=[
                 config

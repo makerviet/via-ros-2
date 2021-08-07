@@ -47,7 +47,7 @@ source install/setup.bash
 - Launch camera node
 
 ```
-ros2 launch via_camera_nodes camera_node.launch.py
+ros2 launch generic_camera_node camera_node.launch.py
 ```
 
 - Start camera stream

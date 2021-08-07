@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 ### Build the nodes
-project(generic_camera_driver_node)
+project(generic_camera_node)
 
 ## dependencies
 find_package(ament_cmake REQUIRED)
