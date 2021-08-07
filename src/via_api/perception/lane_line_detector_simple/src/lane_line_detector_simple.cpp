@@ -126,7 +126,7 @@ LaneLineDetectorSimple::Detect(const cv::Mat &org) {
   vector<Point2f> left_pts = SlidingWindow(processed, Rect(1776, 470, 220, 10));
   vector<Point2f> right_pts = SlidingWindow(processed, Rect(2241, 470, 220, 10));
 
-  int lane_width = 400;
+  int lane_width = 450;
   if (left_pts.empty() && !right_pts.empty()) {
     for (size_t i = 0; i < right_pts.size(); ++i) {
       left_pts.push_back(Point2f(right_pts[i].x - lane_width, right_pts[i].y));

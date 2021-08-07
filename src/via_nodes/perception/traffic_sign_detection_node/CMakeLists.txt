@@ -15,14 +15,14 @@ find_package(via_converters REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(cv_bridge REQUIRED)
-find_package(traffic_sign_detector_yolox REQUIRED)
+find_package(traffic_sign_detector_simple REQUIRED)
 
 ament_auto_add_executable(traffic_sign_detection_node
   "src/traffic_sign_detection_node.cpp")
 
 ament_target_dependencies(traffic_sign_detection_node
   std_srvs OpenCV rclcpp rclcpp_components image_transport
-  via_definitions via_converters cv_bridge traffic_sign_detector_yolox)
+  via_definitions via_converters cv_bridge traffic_sign_detector_simple)
 
 # # Install launch files.
 # install(DIRECTORY

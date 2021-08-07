@@ -18,10 +18,12 @@
 #include <std_msgs/msg/string.hpp>
 #include <string>
 #include <thread>
-#include <traffic_sign_detector_yolox/traffic_sign_detector_yolox.hpp>
 #include <via_definitions/perception/traffic_sign.hpp>
 #include <via_definitions/msg/traffic_signs.hpp>
 #include <via_converters/traffic_sign_converter.hpp>
+// #include <traffic_sign_detector_yolox/traffic_sign_detector_yolox.hpp>
+#include <traffic_sign_detector_simple/traffic_sign_detector_simple.hpp>
+
 
 namespace via {
 namespace perception {
@@ -36,7 +38,7 @@ class TrafficSignDetectionNode : public rclcpp::Node {
   rclcpp::Publisher<via_definitions::msg::TrafficSigns>::SharedPtr traffic_signs_pub_;
 
   cv::Mat frame_;
-  std::shared_ptr<TrafficSignDetectorYOLOX> model_;
+  std::shared_ptr<TrafficSignDetectorSimple> model_;
 
   void ImageCallback(const sensor_msgs::msg::Image::SharedPtr msg);
 };

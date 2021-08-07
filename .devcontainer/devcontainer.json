@@ -9,7 +9,7 @@
 	"remoteUser": "ros",
 	"runArgs": [
 		"--network=host",
-		"--env QT_X11_NO_MITSHM=1",
+		"--ipc=host",
 		"--cap-add=SYS_PTRACE",
 		"--security-opt=seccomp:unconfined",
 		"--security-opt=apparmor:unconfined",

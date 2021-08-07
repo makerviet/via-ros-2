@@ -10,7 +10,7 @@ using namespace cv;
 TrafficSignDetectionNode::TrafficSignDetectionNode(
     const rclcpp::NodeOptions &node_options)
     : Node("traffic_sign_detection", node_options) {
-  model_ = std::make_shared<TrafficSignDetectorYOLOX>();
+  model_ = std::make_shared<TrafficSignDetectorSimple>();
   image_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
       "/simulation/image", 1,
       std::bind(&TrafficSignDetectionNode::ImageCallback, this,
