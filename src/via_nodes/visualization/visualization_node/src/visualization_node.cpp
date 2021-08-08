@@ -145,13 +145,13 @@ void VisualizationNode::RenderTrafficSigns(
   for (size_t i = 0; i < signs.size(); i++) {
     const via::definitions::perception::TrafficSign& obj = signs[i];
 
-    fprintf(stderr, "%d = %.5f at %.2f %.2f %.2f x %.2f\n", obj.sign_id, obj.confidence,
+    fprintf(stderr, "%d = %.5f at %.2f %.2f %.2f x %.2f\n", obj.class_id, obj.confidence,
             obj.box.x, obj.box.y, obj.box.width, obj.box.height);
 
     cv::rectangle(img, obj.box, cv::Scalar(255, 0, 0));
 
     char text[256];
-    sprintf(text, "%s %.1f%%", class_names[obj.sign_id], obj.confidence * 100);
+    sprintf(text, "%s %.1f%%", class_names[obj.class_id], obj.confidence * 100);
 
     int baseLine = 0;
     cv::Size label_size =
