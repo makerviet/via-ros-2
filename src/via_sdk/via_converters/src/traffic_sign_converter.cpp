@@ -18,7 +18,7 @@ TrafficSignConverter::TrafficSignsToTrafficSignsMsg(
 via_definitions::msg::TrafficSign TrafficSignConverter::TrafficSignToTrafficSignMsg(
       const via::definitions::perception::TrafficSign& sign){
     via_definitions::msg::TrafficSign sign_msg;
-    sign_msg.sign_id = sign.sign_id;
+    sign_msg.class_id = sign.class_id;
     sign_msg.confidence = sign.confidence;
     sign_msg.box.x = sign.box.x;
     sign_msg.box.y = sign.box.y;
@@ -42,7 +42,7 @@ TrafficSignConverter::TrafficSignsMsgToTrafficSigns(
 via::definitions::perception::TrafficSign TrafficSignConverter::TrafficSignMsgToTrafficSign(
       const via_definitions::msg::TrafficSign& sign_msg){
     via::definitions::perception::TrafficSign sign;
-    sign.sign_id = sign_msg.sign_id;
+    sign.class_id = sign_msg.class_id;
     sign.confidence = sign_msg.confidence;
     sign.box.x = sign_msg.box.x;
     sign.box.y = sign_msg.box.y;

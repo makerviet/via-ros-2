@@ -13,15 +13,13 @@ find_package(std_srvs REQUIRED)
 find_package(via_definitions REQUIRED)
 find_package(via_converters REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(lane_line_detector_simple REQUIRED)
 
 ament_auto_add_executable(simple_control_node
   "src/simple_control_node.cpp")
 
 ament_target_dependencies(simple_control_node
   std_srvs OpenCV rclcpp rclcpp_components
-  via_definitions via_converters
-  lane_line_detector_simple)
+  via_definitions via_converters)
 
 # # Install launch files.
 # install(DIRECTORY

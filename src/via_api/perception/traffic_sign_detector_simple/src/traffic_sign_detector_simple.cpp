@@ -47,7 +47,7 @@ TrafficSignDetectorSimple::Detect(const cv::Mat& bgr) {
   //   via::definitions::perception::TrafficSign sign;
   //   sign.box = objects[i].rect;
   //   sign.confidence = objects[i].prob;
-  //   sign.sign_id = objects[i].label;
+  //   sign.class_id = objects[i].label;
   //   signs.push_back(sign);
   // }
 

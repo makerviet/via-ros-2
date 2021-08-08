@@ -1,10 +1,8 @@
-# VIA SDK - ROS2-based architecture for multimedia robots
+# VIA SDK - ROS2-based architecture for autonomous robots
 
-- VIA project: <https://via.makerviet.org/>.
-- Co-developed by VIA & AIR.
-- Contact:
-    + VIA Team: makerhanoi@gmail.com
-    + AIR Team: air.team.2050@gmail.com
+VIA project: <https://via.makerviet.org/>.
+
+[![](docs/images/lane_following.gif)](https://youtu.be/WHJltaVtBJ0)
 
 ## I. Setup development environment
 
@@ -35,12 +33,37 @@
 
 **ROS 2 Cheatsheet:** <https://github.com/ubuntu-robotics/ros2_cheats_sheet>.
 
-## II. Camera node demo
+## II. Demo
 
-- Build all
+## 1. VIA Simulation Autopilot
+
+This demo shows how to run VIA Autonomous to control a self-driving car in simulation environment.
+
+- Download the Simulation [here](https://github.com/makerhanoi/via-simulation-jeep/releases/tag/v0.2) - Only Linux suppported for now, you can clone the [source code](https://github.com/makerhanoi/via-simulation-jeep) and build your simulation for other OSes.
+
+- Run the simulation and select a map.
+
+- Build all packages
 
 ```
-colcon build
+sh scripts/build.sh
+source install/setup.bash
+```
+
+- Run autonomous stack
+
+```
+ros2 launch via_bringup via_car_simulation.py
+```
+
+## 2. Camera node demo
+
+This demo shows you how to use VIA `generic_camera_node` to capture images from a camera and publish them to a ROS topic.
+
+- Build all packages
+
+```
+sh scripts/build.sh
 source install/setup.bash
 ```
 
@@ -56,7 +79,7 @@ ros2 launch generic_camera_node camera_node.launch.py
 ros2 service call /camera/start std_srvs/srv/Trigger "{}"
 ```
 
-- Open image viewer
+- Open image viewer to see the published images
 
 ```
 ros2 run rqt_image_view rqt_image_view
@@ -77,3 +100,16 @@ Restart ROS 2 deamon:
 ```
 bash scripts/restart_ros2_deamon.sh
 ```
+
+### 2. Missing ROS 2 packages?
+
+Please ensure that you have built the project with `sh scripts/build.sh` and sourced the installation environment:
+
+```
+source install/setup.bash
+```
+## IV. Contact
+
+This project is co-developed by VIA & AIR.
++ VIA Team: makerhanoi@gmail.com
++ AIR Team: air.team.2050@gmail.com
