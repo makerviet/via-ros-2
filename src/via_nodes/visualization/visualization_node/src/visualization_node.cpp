@@ -140,7 +140,7 @@ void VisualizationNode::RenderTrafficSigns(
   }
 
   static const char* class_names[] = {"stop",     "left",    "right",
-                                      "straight", "no_left", "no_right"};
+                                      "straight", "no_left", "no_right", "unknown"};
 
   for (size_t i = 0; i < signs.size(); i++) {
     const via::definitions::perception::TrafficSign& obj = signs[i];

@@ -37,13 +37,13 @@ def generate_launch_description():
     )
     ld.add_action(node2)
 
-    # node3 = Node(
-    #     package='traffic_sign_detection_node',
-    #     executable='traffic_sign_detection_node',
-    #     name='traffic_sign_detection_node',
-    #     namespace='/perception/traffic_sign'
-    # )
-    # ld.add_action(node3)
+    node3 = Node(
+        package='traffic_sign_detection_node',
+        executable='traffic_sign_detection_node',
+        name='traffic_sign_detection_node',
+        namespace='/perception/traffic_sign'
+    )
+    ld.add_action(node3)
 
     node4 = Node(
         package='visualization_node',

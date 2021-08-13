@@ -13,6 +13,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_auto REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(via_common REQUIRED)
 find_package(via_definitions REQUIRED)
@@ -29,6 +30,11 @@ ament_target_dependencies(traffic_sign_detector_simple
 install(
   DIRECTORY include/
   DESTINATION include
+)
+
+install(DIRECTORY
+  models
+  DESTINATION share/${PROJECT_NAME}
 )
 
 install(

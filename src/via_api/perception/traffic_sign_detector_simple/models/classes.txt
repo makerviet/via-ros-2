@@ -1,0 +1,7 @@
+stop
+left
+right
+straight
+no_left
+no_right
+unknown
