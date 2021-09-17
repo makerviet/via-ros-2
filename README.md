@@ -2,7 +2,7 @@
 
 VIA project: <https://via.makerviet.org/>.
 
-[![](docs/images/lane_following.gif)](https://youtu.be/WHJltaVtBJ0)
+[![](docs/images/lane_following.gif)](https://youtu.be/d1vy-Sd1LJE)
 
 ## I. Setup development environment
 
